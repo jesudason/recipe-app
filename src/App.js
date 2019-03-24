@@ -11,13 +11,14 @@ class App extends Component {
     }
   }
 
+    // fetch('http://localhost:3000/api/recipes')
   // MAKE AJAX CALLS HERE
   componentDidMount() {
     console.log('component has mounted');
     var that = this;
-    fetch('http://localhost:3000/api/recipes')
+    fetch('ec2-50-19-109-120.compute-1.amazonaws.com/api/recipes')
       .then(function(response) {
-        response.json()
+        response.text()
           .then(function(data){
             that.setState({
               recipes: data
@@ -36,7 +37,7 @@ class App extends Component {
       recipe_id: ''
     };
 
-    var request = new Request('http://localhost:3000/api/new-recipe', {
+    var request = new Request('ec2-50-19-109-120.compute-1.amazonaws.com/api/new-recipe', {
       method: 'POST',
       headers: new Headers({ 'Content-Type': 'application/json' }),
       body: JSON.stringify(recipe_data)
@@ -78,17 +79,19 @@ class App extends Component {
             <input type="text" ref="recipe_method" placeholder="Method" />
             <button onClick={this.addRecipe.bind(this)}>Add Recipe</button>
           </form>
-          <ul>
-            {recipes.map(recipe => 
-              <li key={recipe.id}>
-                <button className="accordion" onClick={this.showPanel}>{recipe.name}</button>
-                <div className="panel">
-                  <p class="ingredients">{recipe.ingredients}</p>
-                  <p class="method">{recipe.directions}</p>
-                </div>
-              </li>
-            )}
-          </ul>
+          { recipes.length ? 
+            <h2>{recipes}</h2>
+            // <ul>
+            //   recipes.map(recipe => 
+            //     <li key={recipe.id}>
+            //       <button className="accordion" onClick={this.showPanel}>{recipe.name}</button>
+            //       <div className="panel">
+            //         <p class="ingredients">{recipe.ingredients}</p>
+            //         <p class="method">{recipe.directions}</p>
+            //       </div>
+            //     </li>)
+            //     </ul>
+               : ''}
         </div>
       </div>
     );
